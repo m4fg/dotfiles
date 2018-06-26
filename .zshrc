@@ -11,3 +11,7 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 # Customize to your needs...
+
+export FZF_DEFAULT_OPTS='--height 40% --reverse --border'
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
