@@ -11,4 +11,5 @@ if [[ ( "$SHLVL" -eq 1 && ! -o LOGIN ) && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; t
 fi
 
 export NODE_OPTIONS="--max-old-space-size=8192"
+export NODE_ENV="development"
 
