@@ -17,16 +17,10 @@ export FZF_DEFAULT_OPTS='--height 40% --reverse --border'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 
-export PATH=$HOME/.nodebrew/current/bin:$PATH
+#export PATH=$HOME/.nodebrew/current/bin:$PATH
 export PATH=/Users/yuuma/Library/Android/sdk/tools/bin:$PATH
+export PATH=/anaconda3/bin:$PATH
 
-
-# tabtab source for serverless package
-# uninstall by removing these lines or running `tabtab uninstall serverless`
-[[ -f /Users/yuuma/.nodebrew/node/v8.11.3/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh ]] && . /Users/yuuma/.nodebrew/node/v8.11.3/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh
-# tabtab source for sls package
-# uninstall by removing these lines or running `tabtab uninstall sls`
-[[ -f /Users/yuuma/.nodebrew/node/v8.11.3/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh ]] && . /Users/yuuma/.nodebrew/node/v8.11.3/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh
 ###-tns-completion-start-###
 if [ -f /Users/yuuma/.tnsrc ]; then 
     source /Users/yuuma/.tnsrc 
@@ -64,3 +58,19 @@ setopt inc_append_history
 
 function chpwd() { ls }
 function gi() { curl -s https://www.gitignore.io/api/$@ ;}
+
+# Load nodenv automatically by appending
+# the following to ~/.zshrc:
+
+eval "$(nodenv init -)"
+
+
+# tabtab source for serverless package
+# uninstall by removing these lines or running `tabtab uninstall serverless`
+[[ -f /Users/yuuma/.nodenv/versions/10.15.3/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh ]] && . /Users/yuuma/.nodenv/versions/10.15.3/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh
+# tabtab source for sls package
+# uninstall by removing these lines or running `tabtab uninstall sls`
+[[ -f /Users/yuuma/.nodenv/versions/10.15.3/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh ]] && . /Users/yuuma/.nodenv/versions/10.15.3/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh
+# tabtab source for slss package
+# uninstall by removing these lines or running `tabtab uninstall slss`
+[[ -f /Users/yuuma/.nodenv/versions/10.15.3/lib/node_modules/serverless/node_modules/tabtab/.completions/slss.zsh ]] && . /Users/yuuma/.nodenv/versions/10.15.3/lib/node_modules/serverless/node_modules/tabtab/.completions/slss.zsh
