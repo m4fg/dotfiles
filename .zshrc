@@ -20,6 +20,7 @@ export FZF_DEFAULT_OPTS='--height 40% --reverse --border'
 #export PATH=$HOME/.nodebrew/current/bin:$PATH
 export PATH=/Users/yuuma/Library/Android/sdk/tools/bin:$PATH
 export PATH=~/anaconda3/bin:$PATH
+export PATH="/usr/local/opt/php@7.4/bin:$PATH"
 
 ###-tns-completion-start-###
 if [ -f /Users/yuuma/.tnsrc ]; then 
@@ -64,13 +65,3 @@ function gi() { curl -sLw "\n" https://www.toptal.com/developers/gitignore/api/$
 
 eval "$(nodenv init -)"
 
-
-# tabtab source for serverless package
-# uninstall by removing these lines or running `tabtab uninstall serverless`
-[[ -f /Users/yuuma/.nodenv/versions/12.16.0/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh ]] && . /Users/yuuma/.nodenv/versions/12.16.0/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh
-# tabtab source for sls package
-# uninstall by removing these lines or running `tabtab uninstall sls`
-[[ -f /Users/yuuma/.nodenv/versions/12.16.0/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh ]] && . /Users/yuuma/.nodenv/versions/12.16.0/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh
-# tabtab source for slss package
-# uninstall by removing these lines or running `tabtab uninstall slss`
-[[ -f /Users/yuuma/.nodenv/versions/12.16.0/lib/node_modules/serverless/node_modules/tabtab/.completions/slss.zsh ]] && . /Users/yuuma/.nodenv/versions/12.16.0/lib/node_modules/serverless/node_modules/tabtab/.completions/slss.zsh
