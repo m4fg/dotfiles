@@ -20,7 +20,6 @@ export FZF_DEFAULT_OPTS='--height 40% --reverse --border'
 #export PATH=$HOME/.nodebrew/current/bin:$PATH
 export PATH=/Users/yuuma/Library/Android/sdk/tools/bin:$PATH
 export PATH=~/anaconda3/bin:$PATH
-export PATH="/usr/local/opt/php@7.4/bin:$PATH"
 
 ###-tns-completion-start-###
 if [ -f /Users/yuuma/.tnsrc ]; then 
@@ -65,3 +64,5 @@ function gi() { curl -sLw "\n" https://www.toptal.com/developers/gitignore/api/$
 
 eval "$(nodenv init -)"
 
+# Load npm
+eval "`npm completion`"
