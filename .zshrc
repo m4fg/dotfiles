@@ -64,5 +64,14 @@ function gi() { curl -sLw "\n" https://www.toptal.com/developers/gitignore/api/$
 
 eval "$(nodenv init -)"
 
+# Load rbenv automatically by appending
+# the following to ~/.zshrc:
+
+eval "$(rbenv init - zsh)"
+
 # Load npm
 eval "`npm completion`"
+
+
+# Load Angular CLI autocompletion.
+source <(ng completion script)
