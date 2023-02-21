@@ -47,6 +47,8 @@ path=(
   $path
 )
 
+eval $(/opt/homebrew/bin/brew shellenv)
+
 #
 # Less
 #
