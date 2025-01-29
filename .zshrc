@@ -24,8 +24,8 @@ export PATH=/Users/yuuma/Library/Android/sdk/tools/bin:$PATH
 export PATH=~/anaconda3/bin:$PATH
 
 ###-tns-completion-start-###
-if [ -f /Users/yuuma/.tnsrc ]; then 
-    source /Users/yuuma/.tnsrc 
+if [ -f /Users/yuuma/.tnsrc ]; then
+    source /Users/yuuma/.tnsrc
 fi
 ###-tns-completion-end-###
 
@@ -43,37 +43,43 @@ setopt hist_ignore_space
 setopt hist_verify
 
 # 余分な空白は詰めて記録
-setopt hist_reduce_blanks  
+setopt hist_reduce_blanks
 
-# 古いコマンドと同じものは無視 
+# 古いコマンドと同じものは無視
 setopt hist_save_no_dups
 
 # historyコマンドは履歴に登録しない
 setopt hist_no_store
 
-# 補完時にヒストリを自動的に展開         
+# 補完時にヒストリを自動的に展開
 setopt hist_expand
 
 # 履歴をインクリメンタルに追加
 setopt inc_append_history
+
+#　最終行に改行がない場合の表示
+setopt promptsp
+setopt promptcr
+export PROMPT_EOL_MARK=''
 
 
 function chpwd() { ls }
 function gi() { curl -sLw "\n" https://www.toptal.com/developers/gitignore/api/$@ ;}
 
 # Load nodenv automatically by appending
-# the following to ~/.zshrc:
-
 eval "$(nodenv init -)"
 
 # Load rbenv automatically by appending
-# the following to ~/.zshrc:
-
 eval "$(rbenv init - zsh)"
+
+# Load pyenv automatically by appending
+eval "$(pyenv init -)"
 
 # Load npm
 eval "`npm completion`"
 
-
 # Load Angular CLI autocompletion.
-source <(ng completion script)
+# source <(ng completion script)
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/yuuma/.lmstudio/bin"
