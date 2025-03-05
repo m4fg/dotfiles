@@ -9,7 +9,27 @@ autoload -Uz compinit && compinit
 
 # Source Prezto.
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
-  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+  # Check if we're in VS Code or Cursor
+  if [[ $VSCODE_GIT_ASKPASS_MAIN == *"Visual Studio Code"* || $VSCODE_GIT_ASKPASS_MAIN == *"Cursor.app"* ]]; then
+    # Save the current value of ZPREZTODIR
+    ZPREZTODIR_ORIG=$ZPREZTODIR
+    
+    # Temporarily set PREZTO_THEME to an empty value to disable theme loading
+    export ZPREZTODIR=/tmp/disabled_prezto_theme
+    
+    # Source Prezto
+    source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+    
+    # Restore ZPREZTODIR
+    export ZPREZTODIR=$ZPREZTODIR_ORIG
+    
+    # Set default prompt
+    autoload -Uz promptinit && promptinit
+    prompt default
+  else
+    # Regular Prezto sourcing with theme
+    source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+  fi
 fi
 
 # Customize to your needs...
@@ -83,3 +103,10 @@ eval "`npm completion`"
 
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:/Users/yuuma/.lmstudio/bin"
+
+# Shell integration for VS Code or Cursor
+if [[ $VSCODE_GIT_ASKPASS_MAIN == *"Visual Studio Code"* ]]; then
+  source "$(code --locate-shell-integration-path zsh)"
+elif [[ $VSCODE_GIT_ASKPASS_MAIN == *"Cursor.app"* ]]; then
+  source "$(cursor --locate-shell-integration-path zsh)"
+fi
