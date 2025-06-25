@@ -13,3 +13,4 @@ fi
 # export NODE_OPTIONS="--max-old-space-size=8192"
 # export NODE_ENV="development"
 
+. "$HOME/.cargo/env"
