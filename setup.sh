@@ -13,7 +13,9 @@ for f in .??*; do
     [ "$f" = ".gitconfig.local.template" ] && continue
     [ "$f" = ".require_oh-my-zsh" ] && continue
     [ "$f" = ".gitmodules" ] && continue
+    [ "$f" = ".claude" ] && continue
 
     ln -snfv ~/dotfiles/"$f" ~/
 done
 
+ln -sv ~/dotfiles/.claude/commands ~/.claude/commands
