@@ -18,4 +18,7 @@ for f in .??*; do
     ln -snfv ~/dotfiles/"$f" ~/
 done
 
-ln -sv ~/dotfiles/.claude/commands ~/.claude/commands
+ln -sv ~/dotfiles/config/claude/commands ~/.config/claude/commands
+ln -sv ~/dotfiles/config/skills ~/.config/claude/skills
+ln -sv ~/dotfiles/config/skills ~/.codex/skills
+

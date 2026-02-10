@@ -1,0 +1,4 @@
+interface:
+  display_name: "Figma to Frontend"
+  short_description: "Pixel-perfect Figma to frontend build"
+  default_prompt: "Use $figma-to-frontend to implement a Figma node pixel-perfectly."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Campaign Page Coding"
+  short_description: "Mobile-first campaign LP with rem scaling"
+  default_prompt: "Use $campaign-page-coding to code a campaign LP with mobile-first rem scaling and a desktop background frame."

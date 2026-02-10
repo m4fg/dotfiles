@@ -9,27 +9,7 @@ autoload -Uz compinit && compinit
 
 # Source Prezto.
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
-  # Check if we're in VS Code or Cursor
-  if [[ $VSCODE_GIT_ASKPASS_MAIN == *"Visual Studio Code"* || $VSCODE_GIT_ASKPASS_MAIN == *"Cursor.app"* ]]; then
-    # Save the current value of ZPREZTODIR
-    ZPREZTODIR_ORIG=$ZPREZTODIR
-    
-    # Temporarily set PREZTO_THEME to an empty value to disable theme loading
-    export ZPREZTODIR=/tmp/disabled_prezto_theme
-    
-    # Source Prezto
-    source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
-    
-    # Restore ZPREZTODIR
-    export ZPREZTODIR=$ZPREZTODIR_ORIG
-    
-    # Set default prompt
-    autoload -Uz promptinit && promptinit
-    prompt default
-  else
-    # Regular Prezto sourcing with theme
-    source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
-  fi
+  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
 # Customize to your needs...
@@ -110,3 +90,15 @@ if [[ $VSCODE_GIT_ASKPASS_MAIN == *"Visual Studio Code"* ]]; then
 elif [[ $VSCODE_GIT_ASKPASS_MAIN == *"Cursor.app"* ]]; then
   source "$(cursor --locate-shell-integration-path zsh)"
 fi
+
+# mise activate
+eval "$(mise activate zsh)"
+
+export PATH="$PATH:/Users/yuuma/.local/bin"
+
+if type trash > /dev/null 2>&1; then
+    alias rm='trash -v'
+fi
+
+# Added by Antigravity
+export PATH="/Users/yuuma/.antigravity/antigravity/bin:$PATH"
