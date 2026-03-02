@@ -1,17 +1,17 @@
 ---
 name: figma-to-frontend
-description: Figma MCPとPlaywright MCPまたはPlaywright cliを使ってFigmaデザインをピクセルパーフェクトにフロントエンド実装するための技能。Figma URL/node-idが与えられ、ブラウザ幅がデザイン幅と一致する状態で完全一致が要求される場合に使用する。デザイントークン抽出、コンポーネント分割実装、スクリーンショットと計算スタイル比較による差分修正を行う。
+description: Figma REST APIまたはFigma MCPとPlaywright MCPまたはPlaywright cliを使ってFigmaデザインをピクセルパーフェクトにフロントエンド実装するための技能。Figma URL/node-idが与えられ、ブラウザ幅がデザイン幅と一致する状態で完全一致が要求される場合に使用する。デザイントークン抽出、コンポーネント分割実装、スクリーンショットと計算スタイル比較による差分修正を行う。
 ---
 
 # Figma to Frontend
 
 ## 概要
 
-Figma MCPでデザイン情報を取得し、デザイントークン化→コンポーネント分割実装→Playwright MCPまたはPlaywright cliでの差分検証を繰り返して、デザイン幅での1:1一致を達成する。
+Figma REST APIまたはFigma MCPでデザイン情報を取得し、デザイントークン化→コンポーネント分割実装→Playwright MCPまたはPlaywright cliでの差分検証を繰り返して、デザイン幅での1:1一致を達成する。
 
 ## 前提条件
 
-- Figma MCPが設定済みであること
+- Figma REST APIまたはFigma MCPが設定済みであること
 - Playwright MCPまたはPlaywright cliが設定済みであること
 - Figmaファイルへのアクセス権があること
 - 使用するフレームワーク/ライブラリがプロジェクトにセットアップ済みであること
@@ -24,7 +24,7 @@ MCPが未設定または接続できない場合は、その旨を明示し、�
 - node-id付きのFigma URLを受け取り、ページ全体ではなくフレーム/コンポーネント単位で対象を絞る。
 - 複雑なページはセクションごとにノードを分割する。
 
-2. Figma MCPでデザイン取得
+2. Figma REST APIまたはFigma MCPでデザイン取得
 - `get_design_context` を使って対象ノードの構造/レイアウト/スタイルを取得する。
 - 取得項目: レイアウト、カラー、タイポグラフィ、スペーシング、ボーダー、シャドウ、サイズ、制約。
 - 画像アセットやアイコンが不足する場合は、Figmaからのエクスポートを依頼する。

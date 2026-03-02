@@ -1,0 +1,4 @@
+interface:
+  display_name: "Figma REST API Coding"
+  short_description: "Extract coding data from Figma REST API"
+  default_prompt: "Use $figma-rest-api-coding to implement this Figma design from file key and node IDs."

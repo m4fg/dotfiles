@@ -102,3 +102,8 @@ fi
 
 # Added by Antigravity
 export PATH="/Users/yuuma/.antigravity/antigravity/bin:$PATH"
+
+# if ~/.env file exists, source it
+if [ -f "$HOME/.env" ]; then
+  source "$HOME/.env"
+fi
