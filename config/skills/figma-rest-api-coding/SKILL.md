@@ -20,7 +20,7 @@ Use this skill FIRST when any of the following is true:
 
 This skill REQUIRES a valid `FIGMA_TOKEN` with appropriate scopes.
 To load the token, ensure it is set in the environment variable `FIGMA_TOKEN` before invoking this skill. For example:
-source ~/.env
+source ~/figma.conf
 
 If the token is missing or invalid, report an authentication error and do not attempt API calls.
 
