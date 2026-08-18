@@ -107,3 +107,6 @@ export PATH="/Users/yuuma/.antigravity/antigravity/bin:$PATH"
 if [ -f "$HOME/.env" ]; then
   source "$HOME/.env"
 fi
+
+# godot
+alias godot='/Applications/Godot.app/Contents/MacOS/Godot'
