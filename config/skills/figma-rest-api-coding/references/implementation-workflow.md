@@ -19,6 +19,11 @@ Choose the smallest request set that satisfies the task:
 4. Component metadata: file-level components, component sets, styles
 5. Revision diff (optional): versions endpoint
 
+Route every call through `scripts/figma-api.sh`: data already fetched within
+the cache TTL is served from the file cache (`CACHE_HIT` on stderr) without
+consuming rate limit. Batch node IDs into one `nodes` call instead of one
+call per node.
+
 ## 3. Extract Layout Model
 
 From node JSON, extract:
@@ -72,7 +77,7 @@ Avoid guessing component behavior that is not present in API data.
 ## 8. Handle Errors Predictably
 
 - On any Figma communication error, stop processing immediately and report both error code and cause
-- On `429`: back off using `Retry-After`.
+- On `429` (or `figma-api.sh` exit code `29`): stop ALL Figma API calls immediately, report the rate limit to the user, wait `Retry-After` seconds (default 60), then resume from the failed request. Never continue firing the remaining requests.
 - On `403`: check missing scope.
 - On `404`: validate `file_key` or node existence.
 - On partial data: log missing fields and continue with explicit assumptions.

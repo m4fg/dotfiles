@@ -32,9 +32,9 @@ Load only the relevant reference files:
 - `references/implementation-workflow.md` when converting design data to code
 - `references/snippets.md` when building curl/TypeScript calls quickly
 
-Use helper script when useful:
+Route ALL Figma API calls through the helper script:
 
-- `scripts/figma-api.sh` for repeatable API calls from terminal
+- `scripts/figma-api.sh` — it provides the file cache and rate-limit handling below; raw `curl` bypasses both and is debug-only
 
 ## Collect Inputs
 
@@ -69,6 +69,34 @@ Use this order by default:
 
 Avoid pulling whole-file payloads unless needed.
 
+## Rate Limit Handling (Must Follow)
+
+The Figma REST API enforces per-endpoint rate limits. When a request hits the limit:
+
+- `scripts/figma-api.sh` exits with code `29` (reserved exclusively for rate limiting — no other failure mode uses it) and prints one machine-readable line to stderr: `RATE_LIMITED retry_after=<seconds>`
+- On exit code `29` or any HTTP `429`, IMMEDIATELY STOP ALL further Figma API calls — not just the failed one. Do not fire any remaining planned requests, and do not retry with backoff-and-continue.
+- Record which request failed so processing can resume from it later
+- Report to the user that the rate limit was hit and how many seconds to wait (`retry_after`; the script defaults to `60` when the API omits `Retry-After`)
+- Wait at least `retry_after` seconds before the next API call (split long waits into repeated short sleeps to stay within tool timeouts; if `sleep` is unavailable in the environment, report the wait time to the user and resume on the next turn)
+- After waiting, resume from the failed request. If it returns `429` again, stop and wait again — never busy-retry.
+- The script records the block window in a shared `rate-limited-until` state file; any script call during the window exits `29` without touching the network. Cache hits still work while rate-limited, so cached data can be used to continue non-API work.
+
+## File Cache (Reduce Request Count)
+
+`scripts/figma-api.sh` caches every successful GET response on disk so repeat requests never hit the API:
+
+- Location: `FIGMA_CACHE_DIR` (default `./temp/figma-cache`), namespaced by a fingerprint of API base URL + token so different accounts never share entries
+- TTL: `FIGMA_CACHE_TTL` seconds (default `3600`)
+- Refresh: `FIGMA_NO_CACHE=1` ignores the cached copy, fetches fresh, and updates the cache — use it right after the design changed in Figma
+- Only `2xx` responses are cached; errors and `429` are never cached
+- A cache hit prints `CACHE_HIT <request>` to stderr and makes no network call
+
+To keep request counts low:
+
+- Before re-fetching the same nodes/variables/styles within a task, rely on the cache instead of calling the API again
+- Batch node IDs into one `nodes` call (`ids=1:2,3:4`) instead of one call per node
+- Fetch only what the task needs (`ids` + `depth`), never the whole file by default
+
 ## Convert to Code Plan
 
 Convert API results into implementation artifacts:
@@ -85,10 +113,10 @@ Then generate code in small increments and verify with exported images.
 
 Apply these rules for stable automation:
 
-- Handle `429` with `Retry-After` and exponential backoff
+- On `429` (or script exit `29`), stop ALL Figma API calls immediately and follow the Rate Limit Handling section — no backoff-and-continue
 - Retry transient `5xx` responses
 - Chunk very large `ids` queries
-- Cache per-run responses for `nodes`, `variables`, `styles`
+- Use the file cache (see File Cache section) so `nodes`, `variables`, `styles` are fetched at most once per TTL
 - Report unknown node types explicitly instead of guessing
 - If a Figma API request fails, stop processing immediately and report both the error code and cause
 

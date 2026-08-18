@@ -49,4 +49,5 @@ Use the following Figma REST endpoints for coding workflows.
 - Convert URL node ID (`1-2`) to API node ID (`1:2`).
 - Exported image URLs are temporary. Download immediately for deterministic pipelines.
 - Large files can return large payloads. Prefer `nodes` endpoint with targeted `ids`.
-- As of November 17, 2025, Figma provides endpoint-specific rate-limit tiers. Handle `429` with backoff.
+- As of November 17, 2025, Figma provides endpoint-specific rate-limit tiers. On `429`, stop ALL Figma API calls, wait for `Retry-After` (default 60s), then resume — see "Rate Limit Handling" in SKILL.md.
+- Route calls through `scripts/figma-api.sh` so successful responses are served from the file cache instead of repeat API calls.

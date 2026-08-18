@@ -2,7 +2,42 @@
 
 Use these snippets as templates for coding tasks.
 
-## curl: get specific nodes
+Route API calls through `scripts/figma-api.sh` — it adds file caching and
+rate-limit handling that raw `curl` does not have.
+
+## figma-api.sh: get specific nodes (cached)
+
+```bash
+scripts/figma-api.sh nodes "${FILE_KEY}" "${NODE_IDS}" "depth=2"
+```
+
+## figma-api.sh: export reference PNG (cached)
+
+```bash
+scripts/figma-api.sh images "${FILE_KEY}" "${NODE_IDS}" png 2
+```
+
+## figma-api.sh: refresh after the design changed
+
+```bash
+FIGMA_NO_CACHE=1 scripts/figma-api.sh nodes "${FILE_KEY}" "${NODE_IDS}" "depth=2"
+```
+
+## Handling exit code 29 (rate limited)
+
+```bash
+status=0
+scripts/figma-api.sh nodes "${FILE_KEY}" "${NODE_IDS}" || status=$?
+if [[ "$status" -eq 29 ]]; then
+  # stderr contained: RATE_LIMITED retry_after=<seconds>
+  # STOP all Figma API calls, wait that long, then re-run this command.
+  exit 29
+elif [[ "$status" -ne 0 ]]; then
+  exit "$status"
+fi
+```
+
+## curl: debug only (bypasses cache and rate-limit gate)
 
 ```bash
 curl -sS --fail-with-body \
@@ -10,41 +45,40 @@ curl -sS --fail-with-body \
   "https://api.figma.com/v1/files/${FILE_KEY}/nodes?ids=${NODE_IDS}&depth=2"
 ```
 
-## curl: export reference PNG
+## TypeScript: stop-all-on-429 request helper
 
-```bash
-curl -sS --fail-with-body \
-  -H "X-Figma-Token: ${FIGMA_TOKEN}" \
-  "https://api.figma.com/v1/images/${FILE_KEY}?ids=${NODE_IDS}&format=png&scale=2"
-```
-
-## TypeScript: request with retry for 429/5xx
+On `429`, throw and stop the whole pipeline — do not auto-retry inside the
+helper while other requests keep firing. The caller waits `retryAfterSec`,
+then resumes from the failed request.
 
 ```ts
-async function figmaGet(path: string, retries = 4): Promise<unknown> {
+class RateLimitError extends Error {
+  constructor(public retryAfterSec: number) {
+    super(`Figma rate limit hit. Stop all requests, wait ${retryAfterSec}s, then resume.`);
+  }
+}
+
+let blockedUntilMs = 0; // shared gate for ALL Figma requests in this process
+
+async function figmaGet(path: string): Promise<unknown> {
   const token = process.env.FIGMA_TOKEN;
   if (!token) throw new Error("FIGMA_TOKEN is required");
 
-  let attempt = 0;
-  while (true) {
-    const res = await fetch(`https://api.figma.com${path}`, {
-      headers: {
-        "X-Figma-Token": token,
-      },
-    });
+  const waitMs = blockedUntilMs - Date.now();
+  if (waitMs > 0) throw new RateLimitError(Math.ceil(waitMs / 1000));
 
-    if (res.ok) return res.json();
+  const res = await fetch(`https://api.figma.com${path}`, {
+    headers: { "X-Figma-Token": token },
+  });
+  if (res.ok) return res.json();
 
-    const retryAfter = Number(res.headers.get("retry-after") || "0");
-    const retryable = res.status === 429 || res.status >= 500;
-    if (!retryable || attempt >= retries) {
-      throw new Error(`Figma API failed: ${res.status} ${await res.text()}`);
-    }
-
-    const baseWait = retryAfter > 0 ? retryAfter * 1000 : 500 * (2 ** attempt);
-    await new Promise((r) => setTimeout(r, baseWait));
-    attempt += 1;
+  if (res.status === 429) {
+    const headerVal = Number(res.headers.get("retry-after"));
+    const retryAfter = Number.isInteger(headerVal) && headerVal > 0 ? headerVal : 60;
+    blockedUntilMs = Date.now() + retryAfter * 1000;
+    throw new RateLimitError(retryAfter);
   }
+  throw new Error(`Figma API failed: ${res.status} ${await res.text()}`);
 }
 ```
 
