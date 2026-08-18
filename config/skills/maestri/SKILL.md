@@ -1,6 +1,6 @@
 ---
 name: "maestri"
-description: "Use maestri CLI for multi-agent coordination: sending prompts to connected AI agents and reading their output (maestri ask/check), and managing shared notes between agents (maestri note read/write/edit). Trigger this skill whenever the user wants to communicate with another agent, check an agent's status or output, coordinate multi-agent workflows, or share data via notes — even if they don't say 'maestri' explicitly. Also trigger when the user asks to list connected agents or check what agents are available. Do NOT use for browser automation — use playwright MCP for that instead."
+description: "調査の時に使う。Use maestri CLI for multi-agent coordination: sending prompts to connected AI agents and reading their output (maestri ask/check), and managing shared notes between agents (maestri note read/write/edit). Trigger this skill whenever the user wants to communicate with another agent, check an agent's status or output, coordinate multi-agent workflows, or share data via notes — even if they don't say 'maestri' explicitly. "
 ---
 
 # maestri
