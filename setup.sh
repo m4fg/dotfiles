@@ -18,7 +18,7 @@ for f in .??*; do
     ln -snfv ~/dotfiles/"$f" ~/
 done
 
-ln -sv ~/dotfiles/config/claude/commands ~/.config/claude/commands
-ln -sv ~/dotfiles/config/skills ~/.config/claude/skills
-ln -sv ~/dotfiles/config/skills ~/.codex/skills
-
+# skillsの中身をコピーする、すでに存在している場合は上書き
+cp -a ~/dotfiles/config/skills/* ~/.config/claude/skills
+cp -a ~/dotfiles/config/skills/* ~/.agents/skills
+echo "skills copied."

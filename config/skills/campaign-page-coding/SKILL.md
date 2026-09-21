@@ -67,3 +67,5 @@ body {
 
 - Provide HTML/CSS (or the project framework) that follows these rules.
 - Keep styles readable and consistent; no px usage in sizing.
+- Reproduce text, colors, fonts, images, and other elements faithfully from Figma. Do not create or modify text without authorization.
+

@@ -1,0 +1,4 @@
+interface:
+  display_name: "ゲーム開発ワークフロー"
+  short_description: "Godotで仕様・管理画面・画像生成デザインから実装と実プレイ検証まで進める"
+  default_prompt: "$game-dev-workflow を使って、Godotの新しいゲームの体験の核を整理し、文書構造、コード不要の管理画面、画像生成による画面デザイン、実装・実行確認までの計画を作って。"

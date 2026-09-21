@@ -7,7 +7,7 @@ description: Codex CLI (`codex exec`) の組み込み `image_gen` ツールを `
 
 ## 目的
 
-Codex CLI (`codex exec`) の組み込み `image_gen` ツール（`$imagegen` トリガで起動）を Bash 経由で呼び出し、**gpt-image（image 2.0）** が生成した PNG を指定の絶対パスに保存する。OpenAI API キーは不要で、Codex 自身のサブスクリプション経由で生成される。
+Codex CLI (`codex exec`) の組み込み `image_gen` ツール（`$imagegen` トリガで起動）を Bash 経由で呼び出し、**gpt-image** が生成した PNG を指定の絶対パスに保存する。OpenAI API キーは不要で、Codex 自身のサブスクリプション経由で生成される。
 
 
 ## 前提条件
@@ -18,7 +18,7 @@ Codex CLI (`codex exec`) の組み込み `image_gen` ツール（`$imagegen` ト
 
 ## 制約事項（重要）
 
-- **唯一の生成手段は gpt-image（image 2.0）の直接出力**: `$imagegen` 経由で起動される gpt-image の出力 PNG のみ使用する。NEVER スクリプトによる画像描画（Swift / Objective-C / Core Graphics / Python / Pillow / Cairo / HTML+Canvas など）。NEVER SVG 中間ファイル経由（手書き SVG・`rsvg-convert` / `convert` / `magick` などでのラスタライズ含む）。Codex エージェントが日本語多文字レイアウトの困難をスクリプト描画や SVG ラスタライズで迂回する事例があるため、呼び出し側プロンプトでも明示的に禁止する。
+- **唯一の生成手段は gpt-imageの直接出力**: `$imagegen` 経由で起動される gpt-image の出力 PNG のみ使用する。NEVER スクリプトによる画像描画（Swift / Objective-C / Core Graphics / Python / Pillow / Cairo / HTML+Canvas など）。NEVER SVG 中間ファイル経由（手書き SVG・`rsvg-convert` / `convert` / `magick` などでのラスタライズ含む）。Codex エージェントが日本語多文字レイアウトの困難をスクリプト描画や SVG ラスタライズで迂回する事例があるため、呼び出し側プロンプトでも明示的に禁止する。
 - **解像度は近似値で生成され、Codex エージェントが `sips` で後処理リサイズする**: 例えば「1920x1080」を要求すると Codex 側は 1672x941 程度で生成し、後処理で正確な 1920x1080 にリサイズする。後処理込みで最終サイズは保証されるが、初回生成サイズは制御できない点に留意する。
 - **保存先絶対パスはプロンプト本文に明示する必要がある**: 組み込み `image_gen` ツール自体には保存先パス引数がない。プロンプト中で「`<absolute-path>` に保存してください」と Codex エージェントへ依頼し、エージェント側で `cp` / `mv` 操作を行わせる。
 - **生成 PNG の副産物**: `~/.codex/generated_images/<session-id>/ig_<hash>.png` に Codex 側の元ファイルが残る。ワークスペースにコピー後も削除されない。長期運用ではディスク使用量に注意（必要に応じて手動掃除）。
@@ -87,7 +87,7 @@ $imagegen 次の仕様で画像を生成してください。
 4. **画像内に出すテキストはダブルクォートで囲み verbatim 指定**。難しい単語は letter-by-letter（例: `"Claude Code"` のように半角英数のままや、漢字は確定文言として明記）。
 5. **要素・配置・色を肯定形で「足す」方向に書く**: reviewer から FAIL の `revision-hint` を受け取った場合も、`prompt-engineering` の到達点を書く原則に従い、追加すべき要素・調整方向として書く。
 6. **保存先絶対パスをプロンプト末尾で明示**: Codex エージェントが受け取ったら `cp` / `mv` で配置する。
-7. **生成手段を gpt-image 直接出力に限定する旨を明記**: 「`$imagegen` 経由の gpt-image（image 2.0）出力のみ使用。SVG 中間ファイル・Swift / Objective-C / Python などのスクリプト描画は禁止」とプロンプト本文に書く（詳細は「制約事項」参照）。Codex エージェントは日本語レイアウトが難しいと感じるとスクリプト描画に迂回する傾向があるため、肯定（「gpt-image 出力のみ」）と禁止（「SVG・スクリプト描画なし」）の両面で明示する。
+7. **生成手段を gpt-image 直接出力に限定する旨を明記**: 「`$imagegen` 経由の gpt-image出力のみ使用。SVG 中間ファイル・Swift / Objective-C / Python などのスクリプト描画は禁止」とプロンプト本文に書く（詳細は「制約事項」参照）。Codex エージェントは日本語レイアウトが難しいと感じるとスクリプト描画に迂回する傾向があるため、肯定（「gpt-image 出力のみ」）と禁止（「SVG・スクリプト描画なし」）の両面で明示する。
 8. **参照画像を渡す場合は本文中で各 `Image N` の役割を明示する**: `codex exec -i` で渡したファイルは Codex 側に `Image 1, Image 2, ...` の順で並ぶ。プロンプト本文の `### 参照画像の役割` セクションで「何のための参照か」「画像内のどこに配置するか」「色・形状をどう踏襲するか」を肯定形で書く。テンプレートは下記「参照画像つきの場合のテンプレート追補」を参照。
 
 ### 参照画像つきの場合のテンプレート追補
