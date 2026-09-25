@@ -1,0 +1,33 @@
+{
+  "name": "__PREFIX__-backend",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "cdk": "cdk",
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "tsx --test test/*.test.ts",
+    "synth:dev": "cdk synth --context stage=dev",
+    "synth:prod": "cdk synth --context stage=prod",
+    "deploy:dev": "cdk deploy __StackPrefix__DevStack --profile __AWS_PROFILE__ --context stage=dev --require-approval never",
+    "deploy:prod": "cdk deploy __StackPrefix__ProdStack --profile __AWS_PROFILE__ --context stage=prod --require-approval never",
+    "deploy:prod:cert": "cdk deploy __StackPrefix__ProdCertificateStack --profile __AWS_PROFILE__ --context stage=prod --require-approval never"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.901.0",
+    "@aws-sdk/client-s3": "^3.901.0",
+    "@aws-sdk/lib-dynamodb": "^3.901.0",
+    "@napi-rs/canvas": "^0.1.82",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.156",
+    "@types/node": "^22.0.0",
+    "aws-cdk": "^2.1029.2",
+    "aws-cdk-lib": "^2.227.0",
+    "constructs": "^10.4.2",
+    "esbuild": "^0.25.10",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  }
+}
