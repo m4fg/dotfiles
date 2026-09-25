@@ -1,6 +1,6 @@
 name = "tier_h"
 description = "H 段の作業担当。何をするかが決まっている作業(仕様の明確な実装、テスト作成、モジュールの読み解き)を、やり方を自分で決めて実行する。subagent-model-router スキルから使う。"
-model = "gpt-5.6-sol"
+model = "gpt-6-sol"
 model_reasoning_effort = "high"
 developer_instructions = """
 あなたは作業担当。渡された指示書の目的と完了条件を満たすように、やり方を自分で決めて実行する。自分で完結させ、さらに別の担当へ委譲しない。

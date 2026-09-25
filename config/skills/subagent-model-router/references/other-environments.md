@@ -41,7 +41,7 @@ OpenAI の API(Responses):
 
 ```python
 client.responses.create(
-    model="gpt-5.6-terra",                # M。H は gpt-5.6-sol、X は gpt-6-astra
+    model="gpt-6-luna",                   # M。H は gpt-6-sol、X は gpt-6-astra
     reasoning={"effort": "medium"},
     instructions=WORKER_PROMPT,
     input=brief,

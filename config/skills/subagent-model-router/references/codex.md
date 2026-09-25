@@ -19,11 +19,11 @@ Codex には `default`(汎用)、`worker`(実装と修正)、`explorer`(読み�
 
 | 段 | 担当 | モデル | effort |
 |---|---|---|---|
-| M(調査) | `explorer` | `gpt-5.6-terra` | `medium` |
-| M(定型の変更) | `worker` | `gpt-5.6-terra` | `medium` |
-| H | `worker`(読み解きなら `explorer`) | `gpt-5.6-sol` | `high` |
+| M(調査) | `explorer` | `gpt-6-luna` | `medium` |
+| M(定型の変更) | `worker` | `gpt-6-luna` | `medium` |
+| H | `worker`(読み解きなら `explorer`) | `gpt-6-sol` | `high` |
 | X | `default` か `worker` | `gpt-6-astra` | `high` |
-| L(「安く」のときだけ) | `explorer` か `worker` | `gpt-5.6-luna` | `low` |
+| L(「安く」のときだけ) | `explorer` か `worker` | `gpt-6-luna` | `low` |
 
 **モデルと effort は必ず両方書く。** どちらも省くと親の設定をそのまま引き継ぐ。メインは Astra なので、無指定の担当はすべて Astra で、しかも親と同じ effort で走る。モデルだけ指定して effort を省くと、そのモデルの既定の effort(`medium`)になり、H のつもりが `medium` で走る。
 
@@ -39,7 +39,7 @@ Codex には `default`(汎用)、`worker`(実装と修正)、`explorer`(読み�
 
 ```toml
 [agents]
-default_subagent_model = "gpt-5.6-terra"
+default_subagent_model = "gpt-6-luna"
 default_subagent_reasoning_effort = "medium"
 ```
 
@@ -47,7 +47,7 @@ default_subagent_reasoning_effort = "medium"
 
 ## effort だけ上げる
 
-組み込みの担当を、同じモデルのまま effort を 1 段上げて起動する(M なら `gpt-5.6-terra` × `high`、H なら `gpt-5.6-sol` × `xhigh`、X なら `gpt-6-astra` × `xhigh` を 1 回だけ)。
+組み込みの担当を、同じモデルのまま effort を 1 段上げて起動する(M なら `gpt-6-luna` × `high`、H なら `gpt-6-sol` × `xhigh`、X なら `gpt-6-astra` × `xhigh` を 1 回だけ)。
 
 **`ultra` は subagent に指定しない。** 最大の思考に加えて自動で委譲を始める設定で、担当がさらに担当を増やしてしまう。メイン自身が Ultra で動いている場合は自発的に委譲が起きるが、そのときも段は計画表のとおりに指定する。
 

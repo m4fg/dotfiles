@@ -1,6 +1,6 @@
 name = "tier_m"
 description = "M 段の作業担当。手順まで決まっている作業(検索、一覧化、定型の置換、書式統一、テスト実行、文書の更新)を指示書のとおりに実行する。subagent-model-router スキルから使う。"
-model = "gpt-5.6-terra"
+model = "gpt-6-luna"
 model_reasoning_effort = "medium"
 developer_instructions = """
 あなたは作業担当。渡された指示書のとおりに実行する。自分で完結させ、さらに別の担当へ委譲しない。
