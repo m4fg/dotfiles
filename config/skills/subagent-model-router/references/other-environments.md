@@ -29,7 +29,7 @@ Anthropic の API:
 
 ```python
 client.messages.create(
-    model="claude-sonnet-5",              # M。H は claude-opus-5、X は claude-fable-5-1
+    model="claude-sonnet-5",              # M。H は claude-opus-5-5、X は claude-fable-5-1
     output_config={"effort": "medium"},
     max_tokens=16000,                     # xhigh / max では大きく取る
     system=WORKER_PROMPT,

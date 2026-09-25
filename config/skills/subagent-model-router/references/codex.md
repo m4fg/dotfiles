@@ -25,7 +25,7 @@ Codex には `default`(汎用)、`worker`(実装と修正)、`explorer`(読み�
 | X | `default` か `worker` | `gpt-6-astra` | `high` |
 | L(「安く」のときだけ) | `explorer` か `worker` | `gpt-6-luna` | `low` |
 
-**モデルと effort は必ず両方書く。** どちらも省くと親の設定をそのまま引き継ぐ。メインは Astra なので、無指定の担当はすべて Astra で、しかも親と同じ effort で走る。モデルだけ指定して effort を省くと、そのモデルの既定の effort(`medium`)になり、H のつもりが `medium` で走る。
+**モデルと effort は必ず両方書く。** どちらも省くと親の設定をそのまま引き継ぐ。メインは Astra なので、無指定の担当はすべて Astra で、しかも親と同じ effort で走る。モデルだけ指定して effort を省くと、そのモデルの既定の effort になる。既定はモデルごとに異なるので、H のつもりが意図しない effort で走る。
 
 解決の順は、定義ファイルの固定値 → 起動時の指定 → `config.toml` の `[agents]` の既定 → 親の値。
 
@@ -53,10 +53,9 @@ default_subagent_reasoning_effort = "medium"
 
 ## 並列と入れ子
 
-- 同時に開けるスレッド数には上限がある(`agents.max_concurrent_threads_per_session`。古い設定名は `agents.max_threads` で、既定は 6 だった)。並列の調査は上限の内側に収め、あふれる分は次の組に回す。
+- 同時に開けるスレッド数には上限がある(`agents.max_concurrent_threads_per_session`。古い設定名は `agents.max_threads`。未設定なら Codex が既定値を決める)。並列の調査は上限の内側に収め、あふれる分は次の組に回す。
 - subagent にさらに subagent を起動させない。指示書に「自分で完結させ、委譲しない」と書く。
 - 並列にするのは読み取り中心の仕事から。同時に書き込む担当は、触るファイルが重ならないことを計画表で確かめてから。
-- 同種のタスクが数十件あるときは、試し打ちが通った後で、CSV の 1 行を 1 担当に割り当てる一括起動(`spawn_agents_on_csv`、実験的機能)が使える。担当ごとの結果が CSV に戻るので、メインの文脈に中身が入らない。
 
 ## 権限
 

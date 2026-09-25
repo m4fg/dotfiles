@@ -4,11 +4,11 @@
 
 ## 指定できること
 
-**モデルは起動のたびに指定できる。** Agent ツールの `model` パラメータに別名(`haiku` / `sonnet` / `opus` / `fable`)か完全な ID を渡す。優先順位は、起動時の指定 → 定義ファイルの `model` → 環境変数 `CLAUDE_CODE_SUBAGENT_MODEL` → メインのモデル。
+**モデルは起動のたびに指定できる。** Agent ツールの `model` パラメータに別名(`haiku` / `sonnet` / `opus` / `fable`。Anthropic API では順に Haiku 4.5 / Sonnet 5 / Opus 5.5 / Fable 5.1)か完全な ID を渡す。定義ファイルでは `inherit` も書けるが、段が固定されないので同梱の定義では使わない。優先順位は、起動時の指定 → 定義ファイルの `model` → 環境変数 `CLAUDE_CODE_SUBAGENT_MODEL` → メインのモデル。
 
 **effort は起動時には指定できない。** 定義ファイルの frontmatter(`effort:`)でだけ決められ、書かれていなければセッションの effort を引き継ぐ。定義を入れずにモデルだけ使い分けると、M の仕事もセッションの effort(多くは `high`)で走る。
 
-**組み込みの Explore は安くない。** 以前は Haiku 固定だったが、現在はメインのモデルを引き継ぐ(上限は Opus)。メインが Fable のとき、Explore は Opus、つまり H 段で走る。探索は M の仕事なので、Explore には任せず、`tier-m` か、汎用の subagent を `model: sonnet` で明示して起動する。
+**組み込みの Explore は安くない。** 以前は Haiku 固定だったが、現在はメインのモデルを引き継ぐ(上限は Opus)。メインが Fable のとき、Explore は Opus(5.5)、つまり H 段で走る。探索は M の仕事なので、Explore には任せず、`tier-m` か、汎用の subagent を `model: sonnet` で明示して起動する。
 
 ## 同梱の定義(`tier-m` / `tier-h` / `tier-x`)
 
@@ -49,4 +49,4 @@ plugin の定義は更新のたびに上書きされるので、effort を書き
 - 環境変数 `CLAUDE_CODE_SUBAGENT_MODEL_FORCE=1` が設定されている(全 subagent が 1 つのモデルに固定され、起動時の指定もできない)
 - 組織の許可リストで指定モデルが塞がれている(別のモデルに差し替えられ、警告が出る)
 
-同時に走らせられる subagent は既定で 20 まで。
+同時に走らせられる subagent は既定で 20 まで(環境変数 `CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS` で変更できる)。
